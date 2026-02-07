@@ -1,0 +1,1 @@
+tail -f rsync_vystup.log

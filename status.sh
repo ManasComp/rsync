@@ -1,0 +1,1 @@
+ps -ef | grep [r]sync
