@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- Configuration ---
-TEST_ROOT="./tmp/rsync_ultimate_test"
+TEST_ROOT="/tmp/rsync_ultimate_test"
 MOCK_SRC="$TEST_ROOT/source"
 MOCK_DEST="$TEST_ROOT/destination"
 # RESOLVE SCRIPT PATH
