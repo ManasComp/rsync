@@ -39,8 +39,11 @@ generate_test_data() {
 wait_for_rsync() {
     local timeout=15
     local count=0
-    while pgrep -f "rsync.*$MOCK_SRC" > /dev/null; do
-        if [ $count -ge $timeout ]; then return 1; fi
+    # We use [r]sync as a regex trick so grep doesn't find its own process
+    while ps aux | grep -v grep | grep -q "rsync.*$MOCK_SRC"; do
+        if [ $count -ge $((timeout * 2)) ]; then 
+            return 1 
+        fi
         sleep 0.5
         ((count++))
     done

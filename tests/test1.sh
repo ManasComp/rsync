@@ -44,21 +44,17 @@ cleanup_env() {
 }
 
 wait_for_rsync() {
-    printf "Waiting for rsync to finish..."
-    local timeout=30
+    local timeout=15
     local count=0
-    
-    # Check if rsync is running specifically on our mock source
-    while pgrep -f "rsync.*$MOCK_SRC" > /dev/null; do
-        if [ $count -ge $timeout ]; then
-            printf " ${RED}TIMEOUT${NC}\n"
-            return 1
+    # We use [r]sync as a regex trick so grep doesn't find its own process
+    while ps aux | grep -v grep | grep -q "rsync.*$MOCK_SRC"; do
+        if [ $count -ge $((timeout * 2)) ]; then 
+            return 1 
         fi
-        sleep 1
-        printf "."
+        sleep 0.5
         ((count++))
     done
-    printf " Done.\n"
+    return 0
 }
 
 run_test() {
