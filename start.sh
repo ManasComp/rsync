@@ -113,4 +113,23 @@ nohup bash -c "rsync -ahc -v --stats \
         find '$SRC' -type d -empty -delete; \
     fi" > "$LOG_FILE" 2>&1 &
 
+BACKUP_PID=$!
+
+# --- 2. START MONITOR JOB ---
+# This runs separately. It checks if BACKUP_PID is alive.
+# If alive: it checks log size.
+# If dead: it exits automatically.
+nohup bash -c "
+    while kill -0 $BACKUP_PID 2>/dev/null; do
+        truncate -s '<2G' '$LOG_FILE'
+        sleep 60
+    done
+" > /dev/null 2>&1 &
+
+MONITOR_PID=$!
+
+# --- Info Output ---
+echo "Backup started (PID: $BACKUP_PID)."
+echo "Monitor started (PID: $MONITOR_PID) - watching log size."
+
 echo "Process started in background. Monitor with: tail -f $LOG_FILE"
