@@ -100,7 +100,7 @@ echo "----------------------------------------"
 # --- Execution ---
 # We use 'bash -c' so that the directory cleanup only happens if rsync succeeds (exit code 0)
 # Note: Variables are expanded by the current shell before being passed to bash -c
-nohup bash -c "rsync -ahc --stats \
+nohup bash -c "rsync -ahc -v --stats \
     --one-file-system \
     --backup \
     --backup-dir='$ZALOHA_DIR' \
