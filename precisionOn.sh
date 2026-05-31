@@ -1,0 +1,1 @@
+wakeonlan 54:BF:64:99:6E:1F
